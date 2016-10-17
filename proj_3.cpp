@@ -9,16 +9,24 @@ void printboard(int x, int y, char ** array){
 	// for printing the array
 	int i = 0;
 	cout << " ";
- 	for(i = 0 ; i < y ; i++){
-		cout <<"_" <<  i;
-	}
-	cout <<"_" << endl; 
-	for( i = 0; i < x ; i++){
-		cout << i << "|"; 
-		for(int j = 0 ; j < y ; j++){
-					
-		 	cout << array[i][j] << "|";
+ 		for(i = 0 ; i < y ; i++){
+			cout <<"_" <<  i;
 		}
+
+	cout <<"_" << endl; 
+
+	for( i = 0; i < x ; i++){
+		cout << " " << "|"; 
+		for(int j = 0 ; j < y ; j++){
+			if(j < 10){		
+		 		cout << array[i][j] << "|";
+			}
+			else{
+				
+				cout << " "<< array[i][j] << "|";
+			}
+		}
+		cout << i ;
 		cout << endl;
 	}
 	
@@ -148,14 +156,17 @@ int main(){
 	
 	int size_x, size_y;
 	int numBombs , sizeBombs;
-	cout << "Enter the size of the board you want to play: " <<  endl;
+	cout << "Enter the width and height of the board you want to play: " <<  endl;
 	cin >> size_x >> size_y;
 	char **board = (char**)malloc((size_x + 1) * sizeof(char*));
 	for(int i = 0; i < size_x; i++){
 	
 		board[i] = (char*)malloc((size_y + 1) * sizeof(char));
 	}
-	
+	    if (board == NULL) {
+        		cout << "Memory allocation failed" << endl;
+        		return 1; //abort program
+   		 }
 	// Fill the board with '_' first
 	
 	for(int j = 0 ; j < size_x ; j++){
@@ -166,7 +177,6 @@ int main(){
 		}
 	}
 	
-	printboard(size_x, size_y, board);
 
 	//duplicate board to play the game
 
@@ -175,7 +185,10 @@ int main(){
 	
 		duplicate_board[i] = (char*)malloc((size_y + 1) * sizeof(char));
 	}
-
+ 	if (duplicate_board == NULL) {
+        		cout << "Memory allocation failed" << endl;
+        		return 1; //abort program
+			}
 	// populate the values in the duplicate board
 	for(int j = 0 ; j < size_x; j++){
 		for(int k = 0 ; k < size_y ; k++){
@@ -194,8 +207,8 @@ int main(){
 	}
 
 	createBombs(duplicate_board, numBombs, size_x, size_y);
-	printboard(size_x, size_y, duplicate_board);
-	
+//	printboard(size_x, size_y, duplicate_board);
+	printboard(size_x, size_y, board);	
 	playGame(duplicate_board, board, size_x, size_y);
 
 
